@@ -9,8 +9,11 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 make -C "$ROOT/firmware/z80-boot-rom/cpm" stage1.bin
 make -C "$ROOT/firmware/avr-1284p"
 make -C "$ROOT/firmware/z80-boot-rom"
+# CP/M BIOS, boot.img (SD partition 1 + drive A: contents) and utilities.
+make -C "$ROOT/firmware/z80-boot-rom/cpm"
 
 echo
 echo "Build outputs:"
 ls -la "$ROOT/firmware/avr-1284p/z80mcu.hex" \
+       "$ROOT/firmware/z80-boot-rom/cpm/boot.img" \
        "$ROOT/firmware/z80-boot-rom/test-progs/"*.bin

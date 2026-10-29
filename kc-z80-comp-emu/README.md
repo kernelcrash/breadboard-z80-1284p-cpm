@@ -13,8 +13,9 @@ The targets build the CP/M image (`bios.sym`, `boot.img`) automatically if it is
 | `make p1` | load the BIOS chunks, check CCP/BDOS/BIOS addresses (runs `bios-chunks`) |
 | `make p2` | headless boot to a CCP prompt |
 | `make p3` | screen test pattern (SDL window) |
-| `make p4` | interactive CCP prompt with real keyboard (SDL window); runs drive A from `boot.img` |
-| `make p5` | runs `BREAKOUT.COM` (self-test); `./p5_harness` for interactive play |
+| `make p4` | interactive CCP prompt with real keyboard (SDL window); runs drive A from `boot.img` (`--image FILE` to boot another) |
+| `make p5` | automated self-test: types BREAKOUT and quits (unthrottled, so the game ends instantly; not for playing) |
+| `make play` | boot a drive A with `BREAKOUT.COM` at real 8 MHz speed with keyboard; type `BREAKOUT` at the `A>` prompt (arrows move, ESC quits) |
 
 Set `SDL_VIDEODRIVER=dummy` to run the SDL targets headless.
 

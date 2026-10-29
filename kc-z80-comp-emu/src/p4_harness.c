@@ -448,24 +448,29 @@ word LoopZ80(register Z80 *R)
     return INT_NONE;
 }
 
+/* --image FILE: disk image to boot (default: the real boot.img, which
+ * the guest can write to -- pass a copy for anything that does). */
+static const char *image_path = "../firmware/z80-boot-rom/cpm/boot.img";
+
 int main(int argc, char **argv)
 {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--line-double") == 0) line_double = 1;
         else if (strcmp(argv[i], "--self-test") == 0) self_test = 1;
         else if (strcmp(argv[i], "--unthrottled") == 0) unthrottled = 1;
+        else if (strcmp(argv[i], "--image") == 0 && i + 1 < argc) image_path = argv[++i];
         else {
             fprintf(stderr, "unknown option: %s\n", argv[i]);
             fprintf(stderr, "usage: %s [--line-double] [--self-test] "
-                    "[--unthrottled]\n", argv[0]);
+                    "[--unthrottled] [--image FILE]\n", argv[0]);
             return 1;
         }
     }
     out_h = line_double ? SCREEN_H * 2 : SCREEN_H;
 
     if (load_manifest("build/manifest.txt", "build") != 0) return 1;
-    disk_img = fopen("../firmware/z80-boot-rom/cpm/boot.img", "r+b");
-    if (!disk_img) { fprintf(stderr, "can't open boot.img\n"); return 1; }
+    disk_img = fopen(image_path, "r+b");
+    if (!disk_img) { fprintf(stderr, "can't open %s\n", image_path); return 1; }
 
     patch_at(READ_RAW_SECTOR);
     patch_at(WRITE_BLOCK);

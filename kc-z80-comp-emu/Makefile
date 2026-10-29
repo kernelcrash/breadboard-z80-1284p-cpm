@@ -20,7 +20,7 @@ Z80_SRC = third_party/z80em/Z80.c
 SDL2_CFLAGS = $(shell pkg-config --cflags sdl2)
 SDL2_LIBS   = $(shell pkg-config --libs sdl2)
 
-.PHONY: all clean p0 p1 p2 p3 p4 p5 bios-chunks
+.PHONY: all clean p0 p1 p2 p3 p4 p5 play bios-chunks
 all: p0 p1 p2 p3 p4 p5
 
 # Phase P0: minimal harness, proves the vendored core builds/links/runs
@@ -84,6 +84,12 @@ p4: p4_harness build/manifest.txt $(CPM_DIR)/boot.img
 
 p4_harness: src/p4_harness.c $(Z80_SRC)
 	$(CC) $(CFLAGS) $(SDL2_CFLAGS) -o $@ src/p4_harness.c $(Z80_SRC) $(SDL2_LIBS)
+
+# Play BREAKOUT interactively (real-speed throttle, arrow keys/ESC work):
+# the p4 harness booting build/boot_p5.img (a copy of boot.img with
+# BREAKOUT.COM on drive A). Type BREAKOUT at the A> prompt.
+play: p4_harness build/manifest.txt build/boot_p5.img
+	./p4_harness --image build/boot_p5.img
 
 # Phase P5: the acceptance test (see p5_harness.c's own header) --
 # runs breakout.com under the emulator. build/boot_p5.img is a COPY of

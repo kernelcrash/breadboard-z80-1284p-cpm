@@ -4,10 +4,10 @@
 
 void usart_init(void)
 {
-    uint16_t ubrr = (uint16_t)((F_CPU / (16UL * USART_BAUD)) - 1);
+    uint16_t ubrr = (uint16_t)(((F_CPU + 4UL * USART_BAUD) / (8UL * USART_BAUD)) - 1);
     UBRR0H = (uint8_t)(ubrr >> 8);
     UBRR0L = (uint8_t)ubrr;
-    UCSR0A = 0;                                /* U2X0=0, normal speed */
+    UCSR0A = (1 << U2X0);                      /* double speed, see usart.h */
     UCSR0B = (1 << RXEN0) | (1 << TXEN0);
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);    /* 8 data bits, 1 stop, no parity */
 }
@@ -38,8 +38,8 @@ uint8_t usart_getc(void)
 int16_t usart_getc_timeout(uint16_t timeout_ms)
 {
     /* Tight-poll RXC0 every iteration -- NOT poll-then-sleep. At 38400
-     * baud, back-to-back bytes inside an XMODEM block arrive ~260us
-     * apart, and the USART only buffers ~1 extra byte in hardware; a
+     * baud (the original rate; ~87us at today's 115200), back-to-back
+     * bytes inside an XMODEM block arrive ~260us apart, and the USART only buffers ~1 extra byte in hardware; a
      * sleep of even 1ms between checks silently drops/overruns bytes
      * that arrive during the sleep (this was a real bug here that broke
      * every XMODEM transfer -- see bring-up-log.md Phase 2). Approximate

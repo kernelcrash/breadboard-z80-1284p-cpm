@@ -76,6 +76,11 @@ serial adapter attached, the 1284P loads the flash-resident bootstrap and
 starts the Z80, which boots CP/M from the SD card. With a serial adapter
 attached it enters the monitor instead (xmodem upload of a ROM image).
 
+The serial console is **115200 baud, 8N1, no flow control** (adapter TX to
+the 1284P's `PD0`/pin 14, adapter RX to `PD1`/pin 15, common GND). Open the
+terminal before resetting the board: the banner is only printed once. In
+autoboot mode, pressing a key drops you into the monitor.
+
 ## Layout
 
 | Path | Contents |

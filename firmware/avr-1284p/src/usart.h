@@ -8,12 +8,14 @@
 
 #include <stdint.h>
 
-/* 38400 8N1: UBRR = F_CPU/(16*BAUD)-1 = 16000000/(16*38400)-1 = 25,
- * actual baud = 16000000/(16*26) = 38461, error = +0.16% -- well within
- * the ~2% tolerance USARTs need for reliable framing. Chosen over faster
- * rates (57600/115200) specifically for that low error margin; see
- * open-questions.md #5. */
-#define USART_BAUD 38400UL
+/* 115200 8N1, using double-speed mode (U2X0=1): UBRR = round(F_CPU/(8*BAUD))-1
+ * = 16000000/(8*115200) -> 17.4 -> 17, minus 1 = 16; actual baud =
+ * 16000000/(8*17) = 117647, error = +2.1%. That is the best 16 MHz can do
+ * at this rate (normal speed would be +8.5%, too far off to frame reliably)
+ * and is the same setup Arduino uses at 115200/16 MHz. Previously 38400
+ * (+0.16% error); lower rates are more tolerant of a noisy or marginal
+ * adapter -- change USART_BAUD here if you need that, usart.c adapts. */
+#define USART_BAUD 115200UL
 
 void usart_init(void);
 void usart_putc(uint8_t c);

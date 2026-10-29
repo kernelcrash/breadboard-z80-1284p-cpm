@@ -171,11 +171,15 @@ static unsigned int addr_at(unsigned char row, unsigned char xbyte)
  * crt0.s gsinit reason the ball-state comment further down explains. */
 static unsigned char lives;
 
-/* On-screen HUD: lives towards the left, a static "00000" score
- * placeholder towards the right, both on the free 16-scanline strip
- * above the bricks (BRICK_TOP=16) -- no real score is tracked yet
- * (out of this phase's scope), just the digits the reference asked
- * for. HUD_Y=4 centers the 8px-tall glyphs in that strip (4px clear
+/* Score: points per brick, higher for the upper rows (60 for the top
+ * row down to 10 for the bottom). Max total is 1890, so 16 bits is
+ * plenty. Assigned at runtime in main() (same crt0.s gsinit reason as
+ * `lives` above). */
+static unsigned int score;
+
+/* On-screen HUD: lives towards the left, a 5-digit score towards the
+ * right, both on the free 16-scanline strip above the bricks
+ * (BRICK_TOP=16). HUD_Y=4 centers the 8px-tall glyphs in that strip (4px clear
  * above and below) rather than flush against the very top edge.
  * HUD_LIVES_X sits a few character-widths right of the left pillar
  * (MARGIN_BYTES alone, i.e. flush against it, bench-reported as
@@ -190,14 +194,29 @@ static void update_lives_hud(void)
     draw_char(addr_at(HUD_Y, HUD_LIVES_X), (unsigned char)('0' + lives));
 }
 
+/* Draws `score` as HUD_SCORE_DIGITS decimal digits. Digits come from
+ * repeated subtraction of powers of ten, so no divide routine is
+ * needed from the SDCC runtime library. */
+static void update_score_hud(void)
+{
+    static const unsigned int POW10[HUD_SCORE_DIGITS] = {10000, 1000, 100, 10, 1};
+    unsigned int rest = score;
+    unsigned char i, d;
+
+    for (i = 0; i < HUD_SCORE_DIGITS; i++) {
+        d = 0;
+        while (rest >= POW10[i]) {
+            rest -= POW10[i];
+            d++;
+        }
+        draw_char(addr_at(HUD_Y, HUD_SCORE_X + i), (unsigned char)('0' + d));
+    }
+}
+
 static void draw_hud(void)
 {
-    unsigned char i;
-
     update_lives_hud();
-    for (i = 0; i < HUD_SCORE_DIGITS; i++) {
-        draw_char(addr_at(HUD_Y, HUD_SCORE_X + i), '0');
-    }
+    update_score_hud();
 }
 
 /* Dither tiles for fill_rect_tile8() -- one byte per scanline, cycling
@@ -483,6 +502,8 @@ static unsigned char check_brick_hit(unsigned int nbx, unsigned char nby)
             bricks_alive[r][c] = 0;
             bricks_remaining--;
             erase_brick(r, c);
+            score += (unsigned int)(BRICK_ROWS - r) * 10;
+            update_score_hud();
 
             ox0 = (nbx > x0) ? (int)nbx : (int)x0;
             ox1 = (nbx + BALL_W < x1) ? (int)(nbx + BALL_W) : (int)x1;
@@ -636,6 +657,7 @@ void main(void)
     reset_ball();
     reset_bricks();
     lives = LIVES_START;
+    score = 0;
     draw_border();
     draw_bricks();
     draw_paddle(paddle_x);

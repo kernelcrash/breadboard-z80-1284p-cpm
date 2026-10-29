@@ -61,7 +61,7 @@ components = {
     "C12": ("1000uF", "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm",   "bulk electrolytic, power entry (wiring.md: general guidance, exact placement/count/value not specified)"),
     "C13": ("1000uF", "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm",   "bulk electrolytic, near larger chips"),
 
-    # Composite video driver (composite-black-and-white-driver.md), added
+    # Composite video driver, added
     # to wiring.md's own new section. D1/D2 diode-OR the two syncs; Q1
     # mixes that with the pixel stream; C14 AC-couples the result to J3.
     "D1":  ("1N4148", "Diode_THT:D_DO-35_SOD27_P10.16mm_Horizontal", "sync mixer: cathode=HSYNC, anode=SYNC_MIX"),
@@ -74,7 +74,7 @@ components = {
     "R22": ("330R", "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal", "SYNC_MIX -> Q1 base"),
     "R23": ("500R", "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal",
             "Q1 base -> GND -- not a standard E12/E24 value, nearest common "
-            "part is 470R or 560R, see composite-black-and-white-driver.md"),
+            "part is 470R or 560R, see docs/wiring.md"),
     "R24": ("2.2k", "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal", "Q1 base <- 74LS166A QH"),
     "R25": ("330R", "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal", "Q1 collector -> VCC"),
     "R26": ("220R", "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal", "Q1 emitter -> GND"),
@@ -141,7 +141,7 @@ n("HSYNC", ("U2",28), ("D1",1))     # D1 pad1=cathode (standard KiCad diode conv
 n("VSYNC", ("U2",29), ("D2",1))     # D2 pad1=cathode
 n("VIDEO_QH", ("U7",13), ("R24",1))
 
-# ---- Composite video driver (composite-black-and-white-driver.md) ----
+# ---- Composite video driver ----
 n("SYNC_MIX", ("D1",2), ("D2",2), ("R21",1), ("R22",1))   # pad2=anode on both diodes
 n("Q1_BASE", ("R22",2), ("R23",1), ("R24",2), ("Q1",2))    # Q1 pad2 = Base (assumed EBC)
 n("Q1_COLLECTOR", ("Q1",3), ("R25",2))                     # Q1 pad3 = Collector

@@ -11,7 +11,7 @@ A low-chip-count Z80 computer built on a few breadboards, running CP/M 2.2.
   (a small floppy-sized partition) and drive B: (a 50 MB "hard disk").
 
 See `docs/` for the design: `architecture.md`, `wiring.md`, `pin-map.md`,
-`memory-map.md`, `timing-analysis.md`, and `bring-up-log.md`.
+`memory-map.md`, and `bring-up-log.md`.
 
 ## Prerequisites
 

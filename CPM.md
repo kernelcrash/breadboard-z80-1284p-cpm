@@ -1,7 +1,0 @@
-The goal is to take the Z80/1284p based system and extend it into a full CPM 2.2 based system
-- The goal is to be be able to run a real CPM program such as Infocom's Zork 1
-- We need a proper banked memory system. Currently the SRAM is gated to be only 64K in use. In a typical CPM system the ROM is up the top of RAM and your programs can often take up to 60K or so with only a 4K boot rom footprint. In our case we need around 16000 bytes just for the screen display. It would be much better if the screen display existed in the 2nd 64K bank (or even just paging the top 32K or similar. Some ideas need to be explored here. A partial reason for adding the 8255 in is that we could use MSX's simple banked memory system to page in and out 16K blocks. I also don't know where you put the stack when you are paging memory in and out.
-- We either interface to an MSX style keyboard (ie. with 74ls145) or create a bit banged PS2 keyboard interface using 8255 pins
-- We need a disk drive interface. My initial thoughts are to bit bang to an SD card (using an arduino style SD adapter with level converters). We could skip having a FAT32 base on the SD card and simply have the SD card first partition is drive A: and the 2nd partition is drive B: and we dd a CPM boot disk to drive A: and the Zork 1 game disk image to drive B:. We would need to decide on a disk image format to use. CPM had many.
-- Ultimately we need CPM to boot and run so we would need to port an existing CPM or use the publically available source to adapt to our hardware base.
-

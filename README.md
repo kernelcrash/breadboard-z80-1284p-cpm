@@ -42,7 +42,7 @@ This sets the fuses (external clock, JTAG off) and writes the flash.
 Partition the SD card with two primary partitions (type doesn't matter).
 They are raw CP/M images, not FAT.
 
-**Drive A: + boot area** (partition 1): optionally put CP/M files in `drive-a/`, then
+**Drive A: + boot area** (partition 1): everything in `drive-a/` is put on the drive (it ships with `HELLO.COM`, a hello-world test). Then
 
 ```sh
 make -C firmware/z80-boot-rom/cpm
@@ -52,15 +52,21 @@ sudo dd if=firmware/z80-boot-rom/cpm/boot.img of=/dev/sdX1 bs=512 conv=notrunc,f
 The `make` also builds the small CP/M utilities (`cksum.com` etc.) that you
 can copy into `drive-a/` or `drive-b/`.
 
-**Drive B:** (partition 2): put your CP/M files (at least one) in `drive-b/`, then
+**Drive B:** (partition 2): everything in `drive-b/` is put on the drive (it ships with `BREAKOUT.COM`, a simple game; at least one file is required). Then
 
 ```sh
 python3 firmware/z80-boot-rom/cpm/cpm_put.py --geometry driveB driveB.img build drive-b/
 sudo dd if=driveB.img of=/dev/sdX2 bs=512 conv=notrunc,fsync
 ```
 
-Use the partition device nodes (`sdX1`/`sdX2`), not the whole disk. `drive-a/`
-and `drive-b/` contents are git-ignored; supply your own CP/M software.
+Use the partition device nodes (`sdX1`/`sdX2`), not the whole disk. Add your
+own CP/M software to those folders as you like; only `*.COM` files there are
+tracked by git, so don't commit copyrighted software.
+
+`HELLO.COM` is built from `firmware/z80-boot-rom/cpm/hello.asm` (`make`);
+`BREAKOUT.COM` from `firmware/z80-boot-rom/cpm/breakout/` (needs `sdcc`). Both
+are checked in so the images build without them. On the board, run `HELLO`
+from `A:` and `B:` then `BREAKOUT`.
 
 ## Run
 

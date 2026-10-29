@@ -4,7 +4,7 @@
 # include path for the `include 'cpm22.asm'` line to find it.
 Z80ASM = z80asm
 
-all: bios.bin stage1.bin boot.img cksum.com cpydbg.com cpyrand.com cpyren.com
+all: bios.bin stage1.bin boot.img cksum.com cpydbg.com cpyrand.com cpyren.com hello.com
 
 bios.bin: bios.asm cpm22.asm msxfont.img
 	$(Z80ASM) -I . -o $@ bios.asm
@@ -28,6 +28,9 @@ cpyrand.com: cpyrand.asm
 cpyren.com: cpyren.asm
 	$(Z80ASM) -o $@ cpyren.asm
 
+hello.com: hello.asm
+	$(Z80ASM) -o $@ hello.asm
+
 # Label file for verifying the address layout (BOOT should land at
 # $F200 -- see bios.asm's header for the full reasoning) without
 # needing a full disassembly every time. build-boot-image.py also
@@ -45,6 +48,6 @@ boot.img: bios.sym build-boot-image.py cpm_put.py $(wildcard ../../../drive-a/*)
 	python3 build-boot-image.py
 
 clean:
-	rm -f bios.bin bios.sym stage1.bin boot.img cksum.com cpydbg.com cpyrand.com cpyren.com
+	rm -f bios.bin bios.sym stage1.bin boot.img cksum.com cpydbg.com cpyrand.com cpyren.com hello.com
 
 .PHONY: all clean

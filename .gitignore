@@ -24,9 +24,9 @@ fp-info-cache
 *_cache*
 .*.swp
 
-# user-supplied CP/M files for the disk images (copyrighted third-party
-# binaries such as Zork or Turbo Pascal must not be committed)
-/drive-a/*
-/drive-b/*
-!/drive-a/.gitkeep
-!/drive-b/.gitkeep
+# drive-a/ and drive-b/ hold the checked-in starter binaries (HELLO.COM,
+# BREAKOUT.COM). Don't commit other third-party CP/M software (Zork,
+# Turbo Pascal etc.) added there: add its name here or use `git add -f`
+# deliberately.
+!/drive-a/*.COM
+!/drive-b/*.COM

@@ -10,7 +10,7 @@ A low-chip-count Z80 computer built on a few breadboards, running CP/M 2.2.
 - CP/M 2.2 BIOS with VT52 (Zenith) terminal emulation. SD card holds drive A:
   (a small floppy-sized partition) and drive B: (a 50 MB "hard disk").
 
-See `docs/` for the design: `architecture.md`, `wiring.md`, `pin-map.md`,
+See `docs/` for the design: `wiring.md`, `pin-map.md`,
 `memory-map.md`, and `bring-up-log.md`.
 
 ## Prerequisites

@@ -1,0 +1,32 @@
+# build artifacts
+*.o
+*.elf
+*.hex
+*.size
+*.lst
+*.sym
+*.bin
+*.com
+*.rel
+*.ihx
+*.noi
+*.map
+*.lk
+*.img
+!firmware/z80-boot-rom/cpm/msxfont.img
+__pycache__/
+firmware/avr-1284p/src/stage1_rom.h
+
+# kicad / editor temp
+*.sch-bak
+*.kicad_pcb-bak
+fp-info-cache
+*_cache*
+.*.swp
+
+# user-supplied CP/M files for the disk images (copyrighted third-party
+# binaries such as Zork or Turbo Pascal must not be committed)
+/drive-a/*
+/drive-b/*
+!/drive-a/.gitkeep
+!/drive-b/.gitkeep

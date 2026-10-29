@@ -4,8 +4,8 @@ A host-side development emulator of this computer (Z80 core from `third_party/z8
 SDL2 for screen and keyboard) that boots the real CP/M BIOS and `boot.img`.
 Handy for testing CP/M programs without flashing hardware. Details in `DEVLOG.md`.
 
-Needs `gcc`, `python3`, `z80asm`, SDL2 dev files (`pkg-config sdl2`). First build
-the CP/M image: `make -C ../firmware/z80-boot-rom/cpm bios.sym boot.img`.
+Needs `gcc`, `python3`, `z80asm`, SDL2 dev files (`pkg-config sdl2`).
+The targets build the CP/M image (`bios.sym`, `boot.img`) automatically if it is missing.
 
 | Target | What it does |
 |---|---|

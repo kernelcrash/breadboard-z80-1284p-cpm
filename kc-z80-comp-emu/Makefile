@@ -39,10 +39,17 @@ p0_harness: src/p0_harness.c $(Z80_SRC)
 p1: p1_harness build/manifest.txt
 	./p1_harness
 
-bios-chunks:
+CPM_DIR = ../firmware/z80-boot-rom/cpm
+
+# The CP/M build outputs the emulator loads (bios.bin/bios.sym/boot.img).
+# Built on demand by the cpm/ Makefile (needs z80asm).
+$(CPM_DIR)/boot.img $(CPM_DIR)/bios.sym:
+	$(MAKE) -C $(CPM_DIR) bios.sym boot.img
+
+bios-chunks: $(CPM_DIR)/bios.sym
 	python3 tools/extract_bios_chunks.py
 
-build/manifest.txt:
+build/manifest.txt: $(CPM_DIR)/bios.sym
 	python3 tools/extract_bios_chunks.py
 
 p1_harness: src/p1_harness.c $(Z80_SRC)
@@ -51,7 +58,7 @@ p1_harness: src/p1_harness.c $(Z80_SRC)
 # Phase P2: disk abstraction (PatchZ80-based, see p2_harness.c's own
 # header), boots the real CP/M image to a live CCP prompt. Needs a
 # real boot.img -- build one with the cpm/ Makefile if missing.
-p2: p2_harness build/manifest.txt
+p2: p2_harness build/manifest.txt $(CPM_DIR)/boot.img
 	./p2_harness
 
 p2_harness: src/p2_harness.c $(Z80_SRC)
@@ -72,7 +79,7 @@ p3_harness: src/p3_harness.c $(Z80_SRC)
 # Phase P4: keyboard abstraction, typing at the real CCP prompt (see
 # p4_harness.c's own header) -- the natural convergence of P1-P3 plus
 # real SDL keyboard input. Needs the same manifest + boot.img as P2.
-p4: p4_harness build/manifest.txt
+p4: p4_harness build/manifest.txt $(CPM_DIR)/boot.img
 	./p4_harness
 
 p4_harness: src/p4_harness.c $(Z80_SRC)

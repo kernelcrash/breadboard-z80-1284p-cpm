@@ -83,6 +83,7 @@ attached it enters the monitor instead (xmodem upload of a ROM image).
 | `firmware/avr-1284p/` | AVR firmware: ROM emulation, video, monitor |
 | `firmware/z80-boot-rom/cpm/` | CP/M BIOS, bootstrap, image tools, `breakout/` sample |
 | `firmware/z80-boot-rom/test-progs/` | Z80 bring-up test programs |
+| `kc-z80-comp-emu/` | host-side emulator that boots the real CP/M image (see its README) |
 | `hardware/` | netlist, BOM, KiCad helper scripts |
 | `scripts/` | `build_all.sh`, `program_avr.sh` |
 | `docs/` | design and bring-up documentation |

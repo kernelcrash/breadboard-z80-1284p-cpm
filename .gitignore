@@ -30,3 +30,7 @@ fp-info-cache
 # deliberately.
 !/drive-a/*.COM
 !/drive-b/*.COM
+
+# kc-z80-comp-emu build outputs
+/kc-z80-comp-emu/*_harness
+/kc-z80-comp-emu/build/

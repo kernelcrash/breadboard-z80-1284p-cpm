@@ -93,6 +93,16 @@ autoboot mode, pressing a key drops you into the monitor.
 | `scripts/` | `build_all.sh`, `program_avr.sh` |
 | `docs/` | design and bring-up documentation |
 
+## Licence
+
+The project's own code and documentation are MIT licensed (`LICENSE`). Bundled
+third-party parts keep their own terms:
+
+- `firmware/z80-boot-rom/cpm/cpm22.asm`: Digital Research CP/M 2.2 source, under
+  the DRI licence referenced in that file's header.
+- `kc-z80-comp-emu/third_party/z80em/`: Marat Fayzullin's Z80 emulator,
+  **non-commercial use only** (see its `NOTICE.md`).
+
 ## Credits
 
 CP/M 2.2 sources and BIOS structure draw on

@@ -60,8 +60,8 @@ sudo dd if=driveB.img of=/dev/sdX2 bs=512 conv=notrunc,fsync
 ```
 
 Use the partition device nodes (`sdX1`/`sdX2`), not the whole disk. Add your
-own CP/M software to those folders as you like; only `*.COM` files there are
-tracked by git, so don't commit copyrighted software.
+own CP/M software to those folders as you like; git ignores everything there
+except the two starter binaries, so copyrighted software is never committed.
 
 `HELLO.COM` is built from `firmware/z80-boot-rom/cpm/hello.asm` (`make`);
 `BREAKOUT.COM` from `firmware/z80-boot-rom/cpm/breakout/` (needs `sdcc`). Both

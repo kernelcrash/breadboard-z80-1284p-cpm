@@ -24,12 +24,13 @@ fp-info-cache
 *_cache*
 .*.swp
 
-# drive-a/ and drive-b/ hold the checked-in starter binaries (HELLO.COM,
-# BREAKOUT.COM). Don't commit other third-party CP/M software (Zork,
-# Turbo Pascal etc.) added there: add its name here or use `git add -f`
-# deliberately.
-!/drive-a/*.COM
-!/drive-b/*.COM
+# drive-a/ and drive-b/ are staging folders for the SD card images. Only the
+# starter binaries are tracked; anything else you drop in there (Zork, Turbo
+# Pascal etc.) is copyrighted third-party software and stays untracked.
+/drive-a/*
+/drive-b/*
+!/drive-a/HELLO.COM
+!/drive-b/BREAKOUT.COM
 
 # kc-z80-comp-emu build outputs
 /kc-z80-comp-emu/*_harness

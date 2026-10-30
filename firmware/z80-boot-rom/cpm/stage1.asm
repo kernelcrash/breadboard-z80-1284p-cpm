@@ -171,7 +171,9 @@ CHUNK3_BANK:   equ 0
 ; here, rather than left silently broken. ----
 CHUNK1_CKSUM: equ $0CC6
 CHUNK2_CKSUM: equ $B6E6
-CHUNK3_CKSUM: equ $97D4
+; Recomputed 2026-10-30 after bios.asm's wboot_reload fix (chunk 3 changed;
+; chunk 1/2 unchanged). Method: 16-bit sum of the chunk's padded blocks in boot.img.
+CHUNK3_CKSUM: equ $9C75
 
 BOOT_ENTRY: equ $F200
 

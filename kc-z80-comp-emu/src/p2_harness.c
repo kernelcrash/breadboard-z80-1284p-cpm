@@ -9,7 +9,7 @@
  * against the real boot.img instead:
  *
  *   - read_raw_sector ($fa3c): HL=destination buffer, LBA in the fixed
- *     `new_lba` 4-byte little-endian word ($face) -- used both by
+ *     `new_lba` 4-byte little-endian word ($fad2) -- used both by
  *     ongoing disk reads (read_impl/write_impl's read-modify-write
  *     cache miss path) AND by parse_partition_table's boot-time MBR
  *     read (LBA 0) -- one patch covers both.
@@ -45,7 +45,7 @@
 #define CONST_IMPL      0xF2F7
 #define CONIN_IMPL      0xF308
 #define CONOUT_IMPL     0xF31E
-#define NEW_LBA         0xFACE   /* 4-byte LE absolute block LBA */
+#define NEW_LBA         0xFAD2   /* 4-byte LE absolute block LBA */
 
 static byte ram[0x10000];
 static FILE *disk_img;

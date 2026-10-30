@@ -2248,13 +2248,21 @@ ppt_store:
 ; ---- simplification). BIOS itself ($F200+) is running and is never
 ; ---- part of the reload. Best-effort: a failed sector read is
 ; ---- skipped, not retried -- a dead card means disk I/O was already
-; ---- broken. RELOAD_LBA is hand-synced with stage1.asm's CHUNK3_LBA
-; ---- (same no-single-source-of-truth caveat as CHUNK*_LBA / OFF). ----
-RELOAD_LBA:   equ 2048+6		; BOOT_PARTITION_BASE + 6 == stage1 CHUNK3_LBA
-RELOAD_SECS:  equ (BOOT-CBASE)/512	; ($F200-$DC00)/512 = 11 (CCP+BDOS, exact)
+; ---- broken. RELOAD_OFF is hand-synced with stage1.asm's chunk3
+; ---- offset (same no-single-source-of-truth caveat as CHUNK*_LBA / OFF). ----
+RELOAD_OFF:   equ 1+6		; partition-relative LBA of CCP+BDOS: 1 (chunk 1)
+				; + CHUNK2_BLOCKS (6) -- hand-synced with stage1.asm's
+				; chunk3 offset (1+CHUNK2_BLOCKS). Was a compile-time
+				; absolute 2048+6 until 2026-10-30: wrong twice over
+				; (chunk 2 grew to 6 blocks on 2026-10-12, so CCP+BDOS
+				; moved to +7, and it ignored the real partition start
+				; parse_partition_table reads from the MBR), so every
+				; warm boot loaded the wrong sectors over CCP.
 
 wboot_reload:
-    LD   HL,RELOAD_LBA
+    LD   HL,(base_lba_a)	; real partition 1 start, read off the MBR
+    LD   DE,RELOAD_OFF
+    ADD  HL,DE
     LD   (new_lba+0),HL
     LD   HL,0
     LD   (new_lba+2),HL
@@ -2263,15 +2271,15 @@ wboot_reload:
 wr_loop:
     LD   HL,(wr_dst)
     CALL read_raw_sector	; ignore carry -- best effort (see header)
+    LD   HL,(new_lba+0)
+    INC  HL
+    LD   (new_lba+0),HL
     LD   HL,(wr_dst)
     LD   DE,512
     ADD  HL,DE
     LD   (wr_dst),HL
-    LD   HL,(new_lba+0)
-    INC  HL
-    LD   (new_lba+0),HL		; RELOAD_LBA..RELOAD_LBA+11 all share a
-    LD   A,L			; high byte, so the low byte alone ends the
-    CP   (RELOAD_LBA+RELOAD_SECS) & $FF	; loop
+    LD   A,H			; done once the destination reaches BOOT:
+    CP   BOOT>>8		; CBASE + 11*512 == BOOT exactly
     JR   NZ,wr_loop
     RET
 

@@ -86,7 +86,7 @@
 #define WRITE_BLOCK     0xF998
 #define POLL_KEY        0xF400
 #define PENDING_CHAR    0xF4C4
-#define NEW_LBA         0xFACE
+#define NEW_LBA         0xFAD2
 
 #define VRAM_BASE     0xC000
 #define SCREEN_W      640

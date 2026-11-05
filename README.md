@@ -13,6 +13,8 @@ A low-chip-count Z80 computer built on a few breadboards, running CP/M 2.2.
 See `docs/` for the design: `wiring.md`, `pin-map.md`,
 `memory-map.md`, and `bring-up-log.md`.
 
+There is a blog article about this project at   https://www.kernelcrash.com/blog/breadboard-z80-computer-with-bitmap-graphics-and-cp-m
+
 ## Prerequisites
 
 `avr-gcc`/`avr-libc`, `avrdude`, `z80asm`, `python3`, `make`.
